@@ -61,14 +61,14 @@ def test_perf_argmax():
 
 def test_perf_cross_entropy_loss():
     def cross_entropy_loss_args(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
         target = torch.randint(
             0,
             size,
             [
                 batch,
             ],
-            device="cuda",
+            device="xpu",
         )
         return inp, target
 
@@ -85,7 +85,7 @@ def test_perf_cross_entropy_loss():
 
 def test_perf_cumsum():
     def cumsum_args(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
         return inp, 1
 
     bench = Benchmark(
@@ -102,11 +102,11 @@ def test_perf_cumsum():
 def test_perf_nonzero():
     def nonzero_args(dtype, batch, size):
         if dtype == torch.bool:
-            inp = torch.randint(0, 2, [batch, size], dtype=torch.int, device="cuda").to(
+            inp = torch.randint(0, 2, [batch, size], dtype=torch.int, device="xpu").to(
                 torch.bool
             )
         else:
-            inp = torch.randint(0, 2, [batch, size], dtype=dtype, device="cuda")
+            inp = torch.randint(0, 2, [batch, size], dtype=dtype, device="xpu")
         return (inp,)
 
     bench = Benchmark(
@@ -123,11 +123,11 @@ def test_perf_nonzero():
 def test_perf_nonzero_int():
     def nonzero_args(dtype, batch, size):
         if dtype == torch.bool:
-            inp = torch.randint(0, 2, [batch, size], dtype=torch.int, device="cuda").to(
+            inp = torch.randint(0, 2, [batch, size], dtype=torch.int, device="xpu").to(
                 torch.bool
             )
         else:
-            inp = torch.randint(0, 2, [batch, size], dtype=dtype, device="cuda")
+            inp = torch.randint(0, 2, [batch, size], dtype=dtype, device="xpu")
         return (inp,)
 
     bench = Benchmark(
@@ -145,20 +145,20 @@ def test_perf_groupnorm():
     def group_norm_args(dtype, batch, size):
         C = 16
         G = 16
-        inp = torch.randn([batch, C, size], dtype=dtype, device="cuda")
+        inp = torch.randn([batch, C, size], dtype=dtype, device="xpu")
         weight = torch.randn(
             [
                 C,
             ],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         bias = torch.randn(
             [
                 C,
             ],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         return inp, G, weight, bias
 
@@ -175,20 +175,20 @@ def test_perf_groupnorm():
 
 def test_perf_layernorm():
     def layer_norm_args(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
         weight = torch.randn(
             [
                 size,
             ],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         bias = torch.randn(
             [
                 size,
             ],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         return (
             inp,
@@ -212,8 +212,8 @@ def test_perf_layernorm():
 
 def test_perf_weightnorm():
     def weight_norm_args(dtype, batch, size):
-        v = torch.randn([batch, size], dtype=dtype, device="cuda")
-        g = torch.randn([batch], dtype=dtype, device="cuda")
+        v = torch.randn([batch, size], dtype=dtype, device="xpu")
+        g = torch.randn([batch], dtype=dtype, device="xpu")
         return v, g, 0
 
     bench = Benchmark(
@@ -350,7 +350,7 @@ def test_perf_vector_norm():
 
 def test_perf_index_select():
     def index_select_args(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
 
         threshold = 0.1
         dim = 0
@@ -358,7 +358,7 @@ def test_perf_index_select():
         from math import floor
 
         index = torch.randint(
-            0, index_size, [floor(index_size * threshold)], device="cuda"
+            0, index_size, [floor(index_size * threshold)], device="xpu"
         )
         return (inp, dim, index)
 
@@ -375,8 +375,8 @@ def test_perf_index_select():
 
 def test_masked_select():
     def masked_select_args(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
-        mask = torch.randn([batch, size], dtype=dtype, device="cuda") < 0.3
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
+        mask = torch.randn([batch, size], dtype=dtype, device="xpu") < 0.3
         return (inp, mask)
 
     bench = Benchmark(

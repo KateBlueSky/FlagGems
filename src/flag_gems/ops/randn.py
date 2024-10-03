@@ -4,7 +4,7 @@ import torch
 import triton
 import triton.language as tl
 
-from flag_gems.utils.random_utils import philox_cuda_seed_offset, uint_to_uniform_float
+from flag_gems.utils.random_utils import philox_xpu_seed_offset, uint_to_uniform_float
 from flag_gems.utils.shape_utils import volume
 
 try:
@@ -82,14 +82,14 @@ def randn(size, *, dtype=None, layout=None, device=None, pin_memory=None):
     if dtype is None:
         dtype = torch.get_default_dtype()
     if device is None:
-        device = torch.device("cuda")
+        device = torch.device("xpu")
     out = torch.empty(size, device=device, dtype=dtype)
     N = volume(size)
     grid_fn = lambda meta: (triton.cdiv(N, meta["BLOCK"] * UNROLL),)
     # (TODO) Using Triton autotuner makes kernel parameters opaque to the caller,
     # hence we cannot obtain the per thread offset as in Pytorch.
     increment = triton.cdiv(N, UNROLL)
-    philox_seed, philox_offset = philox_cuda_seed_offset(increment)
-    with torch.cuda.device(device):
+    philox_seed, philox_offset = philox_xpu_seed_offset(increment)
+    with torch.xpu.device(device):
         randn_kernel[grid_fn](out, N, philox_seed, philox_offset)
     return out

@@ -2,10 +2,10 @@ def pytest_addoption(parser):
     parser.addoption(
         "--mode",
         action="store",
-        default="cuda",
+        default="xpu",
         required=False,
-        choices=["cuda", "cpu"],
-        help="record latency in cuda or cpu",
+        choices=["xpu", "cpu"],
+        help="record latency in xpu or cpu",
     )
 
 

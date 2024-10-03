@@ -169,7 +169,7 @@ def generate_destination_passing_tile_wrapper(
         code.writeline("# kernel launch")
 
         # launch kernel
-        code.writeline("with torch.cuda.device(in0.device.index):")
+        code.writeline("with torch.xpu.device(in0.device.index):")
         with code.indent():
             kernel_launch: str = f"{kernel_name}[grid]("
             code.writeline(kernel_launch)
@@ -335,7 +335,7 @@ def generate_tile_kernel(
             store_stmt: str = f"tl.store({ptrs_expr}, out0, mask=mask)"
             code.writeline(store_stmt)
 
-        # https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
+        # https://developer.nvidia.com/blog/xpu-pro-tip-write-flexible-kernels-grid-stride-loops/
         code.writeline("else: # grid-stride-loop style kernel")
         with code.indent():
             code.writeline("for j in range(0, tiles_per_cta):")

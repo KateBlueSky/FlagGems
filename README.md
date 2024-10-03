@@ -4,7 +4,7 @@
 
 FlagGems is a high-performance general operator library implemented in [OpenAI Triton](https://github.com/openai/triton). It aims to provide a suite of kernel functions to accelerate LLM training and inference.
 
-By registering with the ATen backend of PyTorch, FlagGems facilitates a seamless transition, allowing users to switch to the Triton function library without the need to modify their model code. Users can still utilize the ATen backend as usual while experiencing significant performance enhancement. The Triton language offers benefits in readability, user-friendliness and performance comparable to CUDA. This convenience allows developers to engage in the development of FlagGems with minimal learning investment.
+By registering with the ATen backend of PyTorch, FlagGems facilitates a seamless transition, allowing users to switch to the Triton function library without the need to modify their model code. Users can still utilize the ATen backend as usual while experiencing significant performance enhancement. The Triton language offers benefits in readability, user-friendliness and performance comparable to xpu. This convenience allows developers to engage in the development of FlagGems with minimal learning investment.
 
 
 ## Feature
@@ -130,8 +130,8 @@ pip install .
     import flag_gems
 
     M, N, K = 1024, 1024, 1024
-    A = torch.randn((M, K), dtype=torch.float16, device="cuda")
-    B = torch.randn((K, N), dtype=torch.float16, device="cuda")
+    A = torch.randn((M, K), dtype=torch.float16, device="xpu")
+    B = torch.randn((K, N), dtype=torch.float16, device="xpu")
     with flag_gems.use_gems():
         C = torch.mm(A, B)
     ```
@@ -139,7 +139,7 @@ pip install .
 ### Execute
 
 1. Test Operator Accuracy
-    - Run reference on cuda
+    - Run reference on xpu
         ```shell
         cd tests
         pytest test_xx_ops.py
@@ -157,7 +157,7 @@ pip install .
     ```
 
 3. Test Operator Performance
-    - Test CUDA performance
+    - Test xpu performance
         ```shell
         cd benchmark
         pytest test_xx_perf.py -s

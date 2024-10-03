@@ -9,7 +9,7 @@ from .conftest import CPU_MODE
 
 WARMUP = 100
 REPETITION = 1000
-torch.backends.cuda.matmul.allow_tf32 = False
+torch.backends.xpu.matmul.allow_tf32 = False
 
 
 class Benchmark:
@@ -48,11 +48,11 @@ class Benchmark:
         if CPU_MODE:
             for i in range(WARMUP):
                 fn()
-            torch.cuda.synchronize()
+            torch.xpu.synchronize()
             start = time.time()
             for i in range(REPETITION):
                 fn()
-            torch.cuda.synchronize()
+            torch.xpu.synchronize()
             end = time.time()
             latency = (end - start) / REPETITION * 1000
         else:
@@ -66,7 +66,7 @@ class Benchmark:
         return latency
 
     def run(self):
-        mode_str = "cpu" if CPU_MODE else "cuda"
+        mode_str = "cpu" if CPU_MODE else "xpu"
         print("")
         for dtype in self.dtypes:
             print(
@@ -114,51 +114,51 @@ SIZES = [i * 1024 for i in range(1, 81, 5)]
 
 
 def unary_arg(dtype, batch, size):
-    inp = torch.randn([batch, size], dtype=dtype, device="cuda")
+    inp = torch.randn([batch, size], dtype=dtype, device="xpu")
     return (inp,)
 
 
 def unary_int_arg(dtype, batch, size):
     inp = torch.randint(
-        low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="cuda"
+        low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="xpu"
     )
     return (inp,)
 
 
 def binary_args(dtype, batch, size):
     if dtype in FLOAT_DTYPES:
-        inp1 = torch.randn([batch, size], dtype=dtype, device="cuda")
-        inp2 = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp1 = torch.randn([batch, size], dtype=dtype, device="xpu")
+        inp2 = torch.randn([batch, size], dtype=dtype, device="xpu")
     elif dtype in INT_DTYPES:
         inp1 = torch.randint(
             torch.iinfo(dtype).min,
             torch.iinfo(dtype).max,
             [batch, size],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         inp2 = torch.randint(
             torch.iinfo(dtype).min,
             torch.iinfo(dtype).max,
             [batch, size],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
     return inp1, inp2
 
 
 def binary_int_args(dtype, batch, size):
     inp1 = torch.randint(
-        low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="cuda"
+        low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="xpu"
     )
     inp2 = torch.randint(
-        low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="cuda"
+        low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="xpu"
     )
     return inp1, inp2
 
 
 def ternary_args(dtype, batch, size):
-    inp1 = torch.randn([batch, size], dtype=dtype, device="cuda")
-    inp2 = torch.randn([batch, size], dtype=dtype, device="cuda")
-    inp3 = torch.randn([batch, size], dtype=dtype, device="cuda")
+    inp1 = torch.randn([batch, size], dtype=dtype, device="xpu")
+    inp2 = torch.randn([batch, size], dtype=dtype, device="xpu")
+    inp3 = torch.randn([batch, size], dtype=dtype, device="xpu")
     return inp1, inp2, inp3

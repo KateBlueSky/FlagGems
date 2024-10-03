@@ -22,9 +22,9 @@ def test_accuracy_llava(prompt, url):
     model = LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf")
     processor = AutoProcessor.from_pretrained("llava-hf/llava-1.5-7b-hf")
     torch.manual_seed(1234)
-    model.to("cuda").eval()
+    model.to("xpu").eval()
     image = Image.open(requests.get(url, stream=True).raw)
-    inputs = processor(text=prompt, images=image, return_tensors="pt").to(device="cuda")
+    inputs = processor(text=prompt, images=image, return_tensors="pt").to(device="xpu")
 
     with torch.no_grad():
         ref_output = model(**inputs).logits

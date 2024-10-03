@@ -4,7 +4,7 @@
 
 FlagGems是一个使用OpenAI推出的[Triton编程语言](https://github.com/openai/triton)实现的高性能通用算子库，旨在为大语言模型提供一系列可应用于PyTorch框架的算子，加速模型的推理与训练。
 
-FlagGems通过对PyTorch的后端aten算子进行覆盖重写，实现算子库的无缝替换，使用户能够在不修改模型代码的情况下平稳地切换到triton算子库。FlagGems不会影响aten后端的正常使用，并且会带来良好的性能提升。Triton语言为算子库提供了更好的可读性和易用性，同时保持了不逊于CUDA的算子性能，因此开发者只需付出较低的学习成本，即可参与FlagGems的算子开发与建设。
+FlagGems通过对PyTorch的后端aten算子进行覆盖重写，实现算子库的无缝替换，使用户能够在不修改模型代码的情况下平稳地切换到triton算子库。FlagGems不会影响aten后端的正常使用，并且会带来良好的性能提升。Triton语言为算子库提供了更好的可读性和易用性，同时保持了不逊于xpu的算子性能，因此开发者只需付出较低的学习成本，即可参与FlagGems的算子开发与建设。
 
 
 ## 特性
@@ -130,8 +130,8 @@ pip install .
     import flag_gems
 
     M, N, K = 1024, 1024, 1024
-    A = torch.randn((M, K), dtype=torch.float16, device="cuda")
-    B = torch.randn((K, N), dtype=torch.float16, device="cuda")
+    A = torch.randn((M, K), dtype=torch.float16, device="xpu")
+    B = torch.randn((K, N), dtype=torch.float16, device="xpu")
     with flag_gems.use_gems():
         C = torch.mm(A, B)
     ```
@@ -139,7 +139,7 @@ pip install .
 ### 执行
 
 1. 算子正确性测试
-    - 在CUDA上运行参考实现
+    - 在xpu上运行参考实现
         ```shell
         cd tests
         pytest test_xx_ops.py
@@ -156,7 +156,7 @@ pip install .
     ```
 
 3. 算子性能测试
-    - 测试CUDA性能
+    - 测试xpu性能
         ```shell
         cd benchmark
         pytest test_xx_perf.py -s

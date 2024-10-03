@@ -619,7 +619,7 @@ class KernelGenerator:
             with code.indent():
                 code.writeline("tile_id = pid")
                 self.gen_body_one_tile_per_cta_with_bptr(code)
-            # https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
+            # https://developer.nvidia.com/blog/xpu-pro-tip-write-flexible-kernels-grid-stride-loops/
             code.writeline("else: # grid-stride-loop style kernel")
             with code.indent():
                 self.gen_body_gsl_with_bptr(code)
@@ -645,7 +645,7 @@ class KernelGenerator:
             with code.indent():
                 code.writeline("tile_id = pid")
                 self.gen_body_one_tile_per_cta_without_bptr(code)
-            # https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
+            # https://developer.nvidia.com/blog/xpu-pro-tip-write-flexible-kernels-grid-stride-loops/
             code.writeline("else: # grid-stride-loop style kernel")
             with code.indent():
                 self.gen_body_gsl_without_bptr(code)
@@ -738,7 +738,7 @@ class KernelGenerator:
             with code.indent():
                 code.writeline("tile_id = pid")
                 self.gen_body_one_tile_per_cta_1d_tile(code)
-            # https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
+            # https://developer.nvidia.com/blog/xpu-pro-tip-write-flexible-kernels-grid-stride-loops/
             code.writeline("else: # grid-stride-loop style kernel")
             with code.indent():
                 self.gen_body_gsl_1d_tile(code)
@@ -893,7 +893,7 @@ class WrapperGenerator:
             else:
                 code.writeline(f"out{i}_stride_order = (0,)")
 
-        code.writeline("with torch.cuda._DeviceGuard(in0.device.index):")
+        code.writeline("with torch.xpu._DeviceGuard(in0.device.index):")
         with code.indent():
             code.writeline(f"{self.jit_fn_name}[grid](")
             with code.indent():
@@ -953,7 +953,7 @@ class WrapperGenerator:
         for i in range(schema.num_output_tensors()):
             code.writeline(f"out{i}_strides = out{i}.stride()")
 
-        code.writeline("with torch.cuda._DeviceGuard(in0.device.index):")
+        code.writeline("with torch.xpu._DeviceGuard(in0.device.index):")
         with code.indent():
             code.writeline(f"{self.jit_fn_name}[grid](")
             with code.indent():
