@@ -7,9 +7,9 @@ import triton.language as tl
 from ..utils import libentry
 
 MAX_TILE_K = 8192
-NUM_SMS = torch.xpu.get_device_properties(
-    torch.xpu.current_device()
-).multi_processor_count
+#NUM_SMS = torch.xpu.get_device_properties(
+#    torch.xpu.current_device()
+#).multi_processor_count
 
 
 def heur_tile_k(args):
@@ -17,7 +17,7 @@ def heur_tile_k(args):
     upper_bound = min(args["K"], MAX_TILE_K)
     while tile_k <= upper_bound:
         num_blocks = args["M"] * triton.cdiv(args["K"], tile_k)
-        num_waves = num_blocks / NUM_SMS
+        num_waves = 8 #num_blocks / NUM_SMS
         if (num_waves > 1) and (tile_k * 2 <= upper_bound):
             tile_k *= 2
         else:

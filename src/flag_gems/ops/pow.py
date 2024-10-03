@@ -6,7 +6,7 @@ import triton.language as tl
 from ..utils import pointwise_dynamic
 
 try:
-    from triton.language.extra.xpu.libdevice import pow as _pow
+    from triton.language.extra.intel.libdevice import pow as _pow
 except ImportError:
     try:
         from triton.language.math import pow as _pow

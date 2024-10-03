@@ -4,7 +4,7 @@ import threading
 import torch
 import triton
 
-DEVICE_COUNT = torch.xpu.device_count()
+DEVICE_COUNT = 1 #torch.xpu.device_count()
 
 
 class LibEntry(triton.KernelInterface):

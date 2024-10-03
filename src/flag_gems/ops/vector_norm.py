@@ -8,7 +8,7 @@ import triton.language as tl
 from ..utils import dim_compress, libentry
 
 try:
-    from triton.language.extra.xpu.libdevice import pow
+    from triton.language.extra.intel.libdevice import pow
 except ImportError:
     try:
         from triton.language.math import pow
