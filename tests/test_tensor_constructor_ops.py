@@ -17,7 +17,7 @@ from .conftest import TO_CPU
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_rand(shape, dtype):
     with flag_gems.use_gems():
-        res_out = torch.rand(shape, dtype=dtype, device="cuda")
+        res_out = torch.rand(shape, dtype=dtype, device="xpu")
     assert (res_out <= 1.0).all()
     assert (res_out >= 0.0).all()
 
@@ -27,7 +27,7 @@ def test_accuracy_rand(shape, dtype):
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_randn(shape, dtype):
     with flag_gems.use_gems():
-        res_out = torch.randn(shape, dtype=dtype, device="cuda")
+        res_out = torch.randn(shape, dtype=dtype, device="xpu")
     mean = torch.mean(res_out)
     std = torch.std(res_out)
     assert torch.abs(mean) < 0.01
@@ -38,7 +38,7 @@ def test_accuracy_randn(shape, dtype):
 @pytest.mark.parametrize("shape", DISTRIBUTION_SHAPES)
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_rand_like(shape, dtype):
-    x = torch.randn(size=shape, dtype=dtype, device="cuda")
+    x = torch.randn(size=shape, dtype=dtype, device="xpu")
     with flag_gems.use_gems():
         res_out = torch.rand_like(x)
     assert (res_out <= 1.0).all()
@@ -49,7 +49,7 @@ def test_accuracy_rand_like(shape, dtype):
 @pytest.mark.parametrize("shape", DISTRIBUTION_SHAPES)
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_randn_like(shape, dtype):
-    x = torch.randn(size=shape, dtype=dtype, device="cuda")
+    x = torch.randn(size=shape, dtype=dtype, device="xpu")
     with flag_gems.use_gems():
         res_out = torch.randn_like(x)
     mean = torch.mean(res_out)
@@ -63,7 +63,7 @@ def test_accuracy_randn_like(shape, dtype):
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_zeros(shape, dtype):
     with flag_gems.use_gems():
-        res_out = torch.zeros(shape, dtype=dtype, device="cuda")
+        res_out = torch.zeros(shape, dtype=dtype, device="xpu")
     gems_assert_equal(
         res_out, torch.zeros(shape, dtype=dtype, device="cpu" if TO_CPU else "cuda")
     )
@@ -74,7 +74,7 @@ def test_accuracy_zeros(shape, dtype):
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_ones(shape, dtype):
     with flag_gems.use_gems():
-        res_out = torch.ones(shape, dtype=dtype, device="cuda")
+        res_out = torch.ones(shape, dtype=dtype, device="xpu")
     gems_assert_equal(
         res_out, torch.ones(shape, dtype=dtype, device="cpu" if TO_CPU else "cuda")
     )
@@ -85,7 +85,7 @@ def test_accuracy_ones(shape, dtype):
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_full(shape, dtype):
     with flag_gems.use_gems():
-        res_out = torch.full(shape, 3.1415926, dtype=dtype, device="cuda")
+        res_out = torch.full(shape, 3.1415926, dtype=dtype, device="xpu")
     gems_assert_equal(
         res_out,
         torch.full(shape, 3.1415926, dtype=dtype, device="cpu" if TO_CPU else "cuda"),

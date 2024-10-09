@@ -145,7 +145,7 @@ def test_perf_zeros_like():
 def test_perf_full_like():
     def full_kwargs(dtype, batch, size):
         return {
-            "input": torch.randn([batch, size], dtype=dtype, device="cuda"),
+            "input": torch.randn([batch, size], dtype=dtype, device="xpu"),
             "fill_value": 3.1415926,
         }
 

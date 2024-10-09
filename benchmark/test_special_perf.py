@@ -13,8 +13,8 @@ from .performance_utils import (
 
 def test_perf_embedding():
     def embedding_kwargs(dtype, batch, size):
-        input = torch.randint(0, batch, (batch,), device="cuda")
-        weight = torch.randn((batch + 1, size), device="cuda", dtype=dtype)
+        input = torch.randint(0, batch, (batch,), device="xpu")
+        weight = torch.randn((batch + 1, size), device="xpu", dtype=dtype)
         return {"input": input, "weight": weight}
 
     bench = Benchmark(
@@ -34,7 +34,7 @@ def test_perf_embedding():
 
 def test_perf_topk():
     def topk_kwargs(dtype, batch, size):
-        x = torch.randn((batch, size), device="cuda", dtype=dtype)
+        x = torch.randn((batch, size), device="xpu", dtype=dtype)
         return {"x": x, "k": 5, "dim": -1}
 
     bench = Benchmark(
@@ -51,7 +51,7 @@ def test_perf_topk():
 
 def test_perf_resolve_neg():
     def resolve_neg_arg(dtype, batch, size):
-        x = torch.randn(size=(batch, size), dtype=dtype, device="cuda")
+        x = torch.randn(size=(batch, size), dtype=dtype, device="xpu")
         y = x.conj()
         z = y.imag
         return (z,)
@@ -69,7 +69,7 @@ def test_perf_resolve_neg():
 
 def test_perf_resolve_conj():
     def resolve_conj_arg(dtype, batch, size):
-        x = torch.randn(size=(size, batch), dtype=dtype, device="cuda")
+        x = torch.randn(size=(size, batch), dtype=dtype, device="xpu")
         return (x.conj(),)
 
     bench = Benchmark(
@@ -101,7 +101,7 @@ def test_perf_unique():
 
 def test_multinomial_with_replacement():
     def multinomial_args(dtype, batch, size):
-        dist = torch.rand((batch, size), dtype=dtype, device="cuda")
+        dist = torch.rand((batch, size), dtype=dtype, device="xpu")
         n_samples = 10000
         return (dist, n_samples, True)
 
@@ -118,7 +118,7 @@ def test_multinomial_with_replacement():
 
 def test_perf_pad():
     def padding_kwargs(dtype, batch, size):
-        input = torch.randn((batch, size), device="cuda", dtype=dtype)
+        input = torch.randn((batch, size), device="xpu", dtype=dtype)
         rank = input.ndim
         pad_params = tuple(torch.randint(0, 10, [rank * 2]))
         pad_value = float(torch.randint(0, 1024, [1]))
@@ -176,7 +176,7 @@ def test_perf_isin():
 def test_perf_fill():
     def fill_kwargs(dtype, batch, size):
         value = 1.0
-        input = torch.empty(batch * size, dtype=dtype, device="cuda")
+        input = torch.empty(batch * size, dtype=dtype, device="xpu")
         return {
             "input": input,
             "value": value,
@@ -196,7 +196,7 @@ def test_perf_fill():
 
 def test_perf_stack():
     def stack_args(dtype, batch, size):
-        inp = torch.randn(size=(batch, size), dtype=dtype, device="cuda")
+        inp = torch.randn(size=(batch, size), dtype=dtype, device="xpu")
         return {(inp,) * 3}
 
     bench = Benchmark(
@@ -212,7 +212,7 @@ def test_perf_stack():
 
 def test_perf_hstack():
     def hstack_args(dtype, batch, size):
-        inp = torch.randn(size=(batch, size), dtype=dtype, device="cuda")
+        inp = torch.randn(size=(batch, size), dtype=dtype, device="xpu")
         return {(inp,) * 3}
 
     bench = Benchmark(
@@ -228,8 +228,8 @@ def test_perf_hstack():
 
 def test_perf_cat():
     def cat_args(dtype, batch, size):
-        inp1 = torch.randn([batch, size], dtype=dtype, device="cuda")
-        inp2 = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp1 = torch.randn([batch, size], dtype=dtype, device="xpu")
+        inp2 = torch.randn([batch, size], dtype=dtype, device="xpu")
         return [[inp1, inp2]]
 
     def cat_kwargs(dtype, batch, size):
@@ -250,10 +250,10 @@ def test_perf_cat():
 def test_perf_cat_int():
     def cat_args(dtype, batch, size):
         inp1 = torch.randint(
-            low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="cuda"
+            low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="xpu"
         )
         inp2 = torch.randint(
-            low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="cuda"
+            low=0, high=0x7FFF, size=[batch, size], dtype=dtype, device="xpu"
         )
         return [[inp1, inp2]]
 
@@ -274,9 +274,9 @@ def test_perf_cat_int():
 
 def test_perf_vstack():
     def vstack_args(dtype, batch, size):
-        inp1 = torch.randn(size=(batch, size), dtype=dtype, device="cuda")
-        inp2 = torch.randn(size=(batch + 1, size), dtype=dtype, device="cuda")
-        inp3 = torch.randn(size=(batch + 2, size), dtype=dtype, device="cuda")
+        inp1 = torch.randn(size=(batch, size), dtype=dtype, device="xpu")
+        inp2 = torch.randn(size=(batch + 1, size), dtype=dtype, device="xpu")
+        inp3 = torch.randn(size=(batch + 2, size), dtype=dtype, device="xpu")
         return [[inp1, inp2, inp3]]
 
     bench = Benchmark(
@@ -292,7 +292,7 @@ def test_perf_vstack():
 
 def test_perf_repeat_interleave_self_int():
     def repeat_interleave_self_int_arg(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
         repeats = 2
         return inp, repeats
 
@@ -316,7 +316,7 @@ def test_perf_repeat_interleave_tensor():
                 size,
             ],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         return (repeats,)
 

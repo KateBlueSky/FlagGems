@@ -449,8 +449,8 @@ def test_perf_triu():
 
 def test_perf_where():
     def where_args(dtype, batch, size):
-        inp1 = torch.randn([batch, size], dtype=dtype, device="cuda")
-        inp2 = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp1 = torch.randn([batch, size], dtype=dtype, device="xpu")
+        inp2 = torch.randn([batch, size], dtype=dtype, device="xpu")
         condition = inp1 > 0
         return condition, inp1, inp2
 
@@ -583,8 +583,8 @@ def test_perf_flip_int():
 
 def test_masked_fill():
     def masked_fill_args(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
-        mask = torch.randn([batch, size], dtype=dtype, device="cuda") < 0.3
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
+        mask = torch.randn([batch, size], dtype=dtype, device="xpu") < 0.3
         value = 1024
         return (inp, mask, value)
 
@@ -617,7 +617,7 @@ def test_perf_tile():
 
 def test_perf_repeat():
     def repeat_arg(dtype, batch, size):
-        inp1 = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp1 = torch.randn([batch, size], dtype=dtype, device="xpu")
         inp2 = [2, 4]
         return inp1, inp2
 

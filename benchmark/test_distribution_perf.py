@@ -11,9 +11,9 @@ from .performance_utils import (
 
 def test_perf_normal():
     def normal_arg(dtype, batch, size):
-        loc = torch.full(size=(size, batch), fill_value=3.0, dtype=dtype, device="cuda")
+        loc = torch.full(size=(size, batch), fill_value=3.0, dtype=dtype, device="xpu")
         scale = torch.full(
-            size=(size, batch), fill_value=10.0, dtype=dtype, device="cuda"
+            size=(size, batch), fill_value=10.0, dtype=dtype, device="xpu"
         )
         return loc, scale
 

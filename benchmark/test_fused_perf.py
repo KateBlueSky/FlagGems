@@ -50,21 +50,21 @@ def test_perf_silu_and_mul():
 
 def test_perf_skip_layernorm():
     def skip_layernorm_args(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
-        residual = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
+        residual = torch.randn([batch, size], dtype=dtype, device="xpu")
         weight = torch.randn(
             [
                 size,
             ],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         bias = torch.randn(
             [
                 size,
             ],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         return (
             inp,
@@ -95,14 +95,14 @@ def test_perf_skip_layernorm():
 
 def test_perf_skip_rmsnorm():
     def skip_rmsnorm_args(dtype, batch, size):
-        inp = torch.randn([batch, size], dtype=dtype, device="cuda")
-        residual = torch.randn([batch, size], dtype=dtype, device="cuda")
+        inp = torch.randn([batch, size], dtype=dtype, device="xpu")
+        residual = torch.randn([batch, size], dtype=dtype, device="xpu")
         weight = torch.randn(
             [
                 size,
             ],
             dtype=dtype,
-            device="cuda",
+            device="xpu",
         )
         return (
             inp,
