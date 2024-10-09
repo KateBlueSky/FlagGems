@@ -6,9 +6,9 @@ def pytest_addoption(parser):
     parser.addoption(
         "--ref",
         action="store",
-        default="cuda",
+        default="xpu",
         required=False,
-        choices=["cuda", "cpu"],
+        choices=["xpu", "cpu"],
         help="device to run reference tests on",
     )
     parser.addoption(
