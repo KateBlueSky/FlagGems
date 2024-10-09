@@ -112,7 +112,7 @@ def exponential_(x, lambd: float = 1.0, *, gen=None):
     philox_seed, philox_offset = philox_cuda_seed_offset(increment)
     eps = torch.finfo(dtype).eps
     x_ = x if inplace else torch.empty(x.size(), dtype=dtype, device=device)
-    with torch.cuda.device(device):
+    with torch.xpu.device(device):
         fused_exponential_kernel[grid_fn](
             x_, N, is_double, lambd, eps, philox_seed, philox_offset
         )

@@ -34,7 +34,7 @@ def softmax_inner_decorator_cascade(x, dim, dtype=None):
 
     out = torch.empty_like(inp, dtype=dtype)
 
-    with torch.cuda.device(out.device):
+    with torch.xpu.device(out.device):
         grid = lambda meta: (triton.cdiv(M, meta["TILE_M"]), 1, 1)
         softmax_kernel_inner[grid](
             out,

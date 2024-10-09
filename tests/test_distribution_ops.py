@@ -50,7 +50,7 @@ def test_accuracy_exponential_(shape, dtype):
 def test_accuracy_multinomial_with_replacement(shape, dtype, n_samples):
     # First use multinomial to generate a series of indices, then
     # use the index counts as the input probabilities (scaled)
-    rand_indices = torch.multinomial(torch.rand(shape), n_samples, True).to("cuda")
+    rand_indices = torch.multinomial(torch.rand(shape), n_samples, True).to("xpu")
     inp_counts = torch.nn.functional.one_hot(rand_indices).sum(1)
     with flag_gems.use_gems():
         out_indices = torch.multinomial(inp_counts.to(dtype=dtype), n_samples, True)

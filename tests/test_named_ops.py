@@ -194,9 +194,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--device",
         action="store",
-        default="cuda",
-        choices=["cuda", "cpu"],
-        help="device to run reference tests on. Choose 'cuda' or 'cpu'. Default is 'cuda'.",
+        default="xpu",
+        choices=["xpu", "cpu"],
+        help="device to run reference tests on. Choose 'xpu' or 'cpu'. Default is 'xpu'.",
     )
     args = parser.parse_args()
 

@@ -11,7 +11,7 @@ from .performance_utils import (
 
 def test_perf_rand():
     def rand_kwargs(dtype, batch, size):
-        return {"size": (batch, size), "dtype": dtype, "device": "cuda"}
+        return {"size": (batch, size), "dtype": dtype, "device": "xpu"}
 
     bench = Benchmark(
         op_name="rand",
@@ -27,7 +27,7 @@ def test_perf_rand():
 
 def test_perf_randn():
     def randn_kwargs(dtype, batch, size):
-        return {"size": (batch, size), "dtype": dtype, "device": "cuda"}
+        return {"size": (batch, size), "dtype": dtype, "device": "xpu"}
 
     bench = Benchmark(
         op_name="randn",
@@ -67,7 +67,7 @@ def test_perf_randn_like():
 
 def test_perf_ones():
     def ones_kwargs(dtype, batch, size):
-        return {"size": (batch, size), "dtype": dtype, "device": "cuda"}
+        return {"size": (batch, size), "dtype": dtype, "device": "xpu"}
 
     bench = Benchmark(
         op_name="ones",
@@ -83,7 +83,7 @@ def test_perf_ones():
 
 def test_perf_zeros():
     def zeros_kwargs(dtype, batch, size):
-        return {"size": (batch, size), "dtype": dtype, "device": "cuda"}
+        return {"size": (batch, size), "dtype": dtype, "device": "xpu"}
 
     bench = Benchmark(
         op_name="zeros",
@@ -103,7 +103,7 @@ def test_perf_full():
             "size": (batch, size),
             "fill_value": 3.1415926,
             "dtype": dtype,
-            "device": "cuda",
+            "device": "xpu",
         }
 
     bench = Benchmark(

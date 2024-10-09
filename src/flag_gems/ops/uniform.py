@@ -72,6 +72,6 @@ def uniform_(self, from_=0.0, to=1.0, *, generator=None):
 
     increment = triton.cdiv(N, UNROLL)
     philox_seed, philox_offset = philox_cuda_seed_offset(increment)
-    with torch.cuda.device(self.device):
+    with torch.xpu.device(self.device):
         uniform_kernel[grid_fn](self, N, philox_seed, philox_offset, from_, to)
     return self

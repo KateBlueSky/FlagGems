@@ -444,7 +444,7 @@ def test_pad(shape, dtype, pad_mode, contiguous):
 @pytest.mark.parametrize("step", [1, 2, 5])
 @pytest.mark.parametrize("end", [128, 256, 1024])
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES + ALL_INT_DTYPES + [None])
-@pytest.mark.parametrize("device", ["cuda", None])
+@pytest.mark.parametrize("device", ["xpu", None])
 @pytest.mark.parametrize(
     "pin_memory", [False, None]
 )  # Since triton only target to GPU, pin_memory only used in CPU tensors.

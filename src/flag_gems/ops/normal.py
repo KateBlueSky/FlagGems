@@ -51,7 +51,7 @@ def normal_distribution(mean, std, *, generator=None):
 
     increment = triton.cdiv(N, UNROLL)
     philox_seed, philox_offset = philox_cuda_seed_offset(increment)
-    with torch.cuda.device(mean.device):
+    with torch.xpu.device(mean.device):
         randn_kernel[grid_fn](out, N, philox_seed, philox_offset)
     return out
 

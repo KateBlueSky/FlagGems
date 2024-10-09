@@ -90,6 +90,6 @@ def randn(size, *, dtype=None, layout=None, device=None, pin_memory=None):
     # hence we cannot obtain the per thread offset as in Pytorch.
     increment = triton.cdiv(N, UNROLL)
     philox_seed, philox_offset = philox_cuda_seed_offset(increment)
-    with torch.cuda.device(device):
+    with torch.xpu.device(device):
         randn_kernel[grid_fn](out, N, philox_seed, philox_offset)
     return out

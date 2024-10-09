@@ -9,7 +9,7 @@ from .conftest import CPU_MODE
 
 WARMUP = 100
 REPETITION = 1000
-torch.backends.cuda.matmul.allow_tf32 = False
+#torch.backends.cuda.matmul.allow_tf32 = False
 
 
 class Benchmark:
@@ -48,11 +48,11 @@ class Benchmark:
         if CPU_MODE:
             for i in range(WARMUP):
                 fn()
-            torch.cuda.synchronize()
+            torch.xpu.synchronize()
             start = time.time()
             for i in range(REPETITION):
                 fn()
-            torch.cuda.synchronize()
+            torch.xpu.synchronize()
             end = time.time()
             latency = (end - start) / REPETITION * 1000
         else:
@@ -66,7 +66,7 @@ class Benchmark:
         return latency
 
     def run(self):
-        mode_str = "cpu" if CPU_MODE else "cuda"
+        mode_str = "cpu" if CPU_MODE else "xpu"
         print("")
         for dtype in self.dtypes:
             print(

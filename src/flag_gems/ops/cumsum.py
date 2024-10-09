@@ -158,12 +158,12 @@ def scan_then_fan_col(inp, out, n_ele, dtype):
     partial_sum = torch.empty(part_num, dtype=dtype, device=inp.device)
 
     grid = (part_num,)
-    with torch.cuda.device(inp.device):
+    with torch.xpu.device(inp.device):
         scan_part_sum_kernel[grid](inp, out, partial_sum, n_ele, part_num, BLOCK_SIZE)
 
     if part_num >= 2:
         scan_then_fan_col(partial_sum, partial_sum, part_num, dtype)
-        with torch.cuda.device(inp.device):
+        with torch.xpu.device(inp.device):
             add_base_sum_kernel[grid](out, partial_sum, n_ele, part_num, BLOCK_SIZE)
 
 
@@ -176,14 +176,14 @@ def scan_then_fan(inp, out, A, B, C, dtype):
     partial_sum = torch.empty(A, part_num, C, dtype=dtype, device=inp.device)
 
     grid = (A, part_num, C)
-    with torch.cuda.device(inp.device):
+    with torch.xpu.device(inp.device):
         scan_part_sum_abc_kernel[grid](
             inp, out, partial_sum, B, C, part_num, BLOCK_SIZE
         )
 
     if part_num >= 2:
         scan_then_fan(partial_sum, partial_sum, A, part_num, C, dtype)
-        with torch.cuda.device(inp.device):
+        with torch.xpu.device(inp.device):
             add_base_sum_abc_kernel[grid](out, partial_sum, B, C, part_num, BLOCK_SIZE)
 
 
@@ -373,9 +373,9 @@ def normed_cumsum(inp, dim=-1):
         inp = inp.transpose(dim, -1).contiguous()
         dim = -1
     out = torch.empty_like(inp)
-    with torch.cuda.device(inp.device.index):
+    with torch.xpu.device(inp.device.index):
         # Pass one, scan a (batch, n_tiles * TILE) sized block within each cta
-        num_sms = torch.cuda.get_device_properties("cuda").multi_processor_count
+        num_sms = torch.xpu.get_device_properties("multiprocessor_count") #TODO Fix this .multi_processor_count 
         TILE = 2048
         # Each row is split into n_chunks of chunks where each chunk is compised of
         # n_tiles of tiles. Different chunks are assigned to different ctas.

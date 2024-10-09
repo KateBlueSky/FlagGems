@@ -145,7 +145,7 @@ def test_perf_arange():
     def arange_kwargs(dtype, batch, size):
         return {
             "end": batch * size,
-            "device": "cuda",
+            "device": "xpu",
             "dtype": dtype,
         }
 
