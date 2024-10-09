@@ -7,7 +7,7 @@ import triton.language as tl
 from ..utils import libentry
 
 try:
-    from triton.language.extra.cuda.libdevice import rsqrt
+    from triton.language.extra.intel.libdevice import rsqrt
 except ImportError:
     try:
         from triton.language.math import rsqrt
