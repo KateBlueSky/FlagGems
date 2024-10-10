@@ -32,11 +32,12 @@ def gelu_tanh_and_mul_kernel(x, y):
         * x_fp32
         * (
             1
-            + tanh(x_fp32 * 0.79788456 * (1 + 0.044715 * pow(x_fp32.to(tl.float32), 2)))
+            + tanh(x_fp32 * 0.79788456 * (1 + 0.044715 * x_fp32.to(tl.float32) * x_fp32.to(tl.float32)))
         )
     )
     return x_gelu * y
 
+#+ tanh(x_fp32 * 0.79788456 * (1 + 0.044715 * pow(x_fp32.to(tl.float32), 2)))
 
 class GeluAndMul(torch.autograd.Function):
     @staticmethod
