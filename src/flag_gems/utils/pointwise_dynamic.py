@@ -843,6 +843,18 @@ class WrapperGenerator:
             code.writeline("one_tile_per_cta = tiles_per_cta==1")
         code.writeline("grid = (num_ctas, 1, 1)")
 
+        code.writeline("print('num_ctas')")
+        code.writeline("print(num_ctas)")
+        code.writeline("print('tiles_per_cta')")
+        code.writeline("print(tiles_per_cta)")
+        code.writeline("print('num_warps')")
+        code.writeline("print(num_warps)")
+        code.writeline("print('one_tile_per_cta')")
+        code.writeline("print(one_tile_per_cta)")
+        code.writeline("print('grid')")
+        code.writeline("print(grid)")
+
+
     def gen_task_partition_1d(self, code: IndentedBuffer):
         code.writeline("# task partitioning")
         ndim = self.ndim
