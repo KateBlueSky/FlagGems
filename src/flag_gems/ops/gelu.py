@@ -57,7 +57,7 @@ def gelu_backward_tanh(x, dy):
     #tanh_out = tanh(0.79788456 * x * (1 + 0.044715 * pow(x_fp32, 2)))
     tanh_out = tanh(0.79788456 * x * (1 + 0.044715 * x_fp32 * x_fp32))
     dydx = 0.5 * x * (
-        (1 - (tanh_out * tanh_out) * (0.79788456 + 0.1070322243 * x_fp32 * x_fp32)
+        (1 - (tanh_out * tanh_out)) * (0.79788456 + 0.1070322243 * x_fp32 * x_fp32)
         #(1 - pow(tanh_out, 2)) * (0.79788456 + 0.1070322243 * x_fp32 * x_fp32)
     ) + 0.5 * (1 + tanh_out)
     dx = dydx * dy
